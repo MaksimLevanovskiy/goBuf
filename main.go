@@ -36,8 +36,17 @@ func main() {
 	err := writeTo(buf, []byte("New bytes"))
 	if err != nil {
 		log.Fatal("Errrrrr")
-		//close
 	}
 
 	fmt.Println(buf.String())
+
+	//limiter pattern
+	limiter := make(chan int, 8)
+	for {
+		limiter <- 1
+		go func() {
+			fmt.Println("r")
+			<-limiter
+		}()
+	}
 }
